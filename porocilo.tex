@@ -1,0 +1,671 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[slovene]{babel}
+\usepackage{graphicx, placeins}
+\usepackage[utf8x]{inputenc}
+%\usepackage{amsmath}
+\usepackage{verbatim}
+\usepackage{amsfonts}
+%\usepackage{pb-diagram}
+\usepackage{caption, subcaption}
+
+\begin{document}
+
+\title{Zaključna naloga}
+\author{Liopold D. Novelli}
+\date{26. 2. 2011}
+\maketitle
+
+\subsection{Naloga}
+
+Kvadratno zanko prepognemo po srednici za kot $\alpha$. Kako je magnetno polje odvisno od kota pregiba?
+
+\section{Uvod}
+
+% Kako se lotim naloge.
+%MAGNETNE SILNICE
+Magnetne silnice so definirane kot krivulje $\mathbf{r}(s)$
+\begin{eqnarray}
+  \mathbf{\dot{r}}(s) = \frac{d \mathbf{r}}{ds} = \frac{\mathbf{B}(\mathbf{r}(s))}{|\mathbf{B}(\mathbf{r}(s))|}
+\end{eqnarray}
+Lastnosti magnetnih silnic:
+\begin{enumerate}
+\item Kažejo v smeri $\mathbf{B}$ in se v nobeni točki ne morejo sekati.
+\item Površinska gostota silnic je sorazmerna velikosti $|\mathbf{B}|$.
+\item Magnetne silnice so vedno zaključene in nimajo ne izvirov ne ponorov.
+\item Bližnje silnice se odbijajo.
+\end{enumerate}
+
+
+Magnetno polje tokovnega vodnika izračunamo z Biot-Savartovo enačbo
+\begin{eqnarray}
+  \mathbf{B}(\mathbf{r}) = \frac{\mu_0}{4\pi}\oint\frac{ \mathbf{j}( \mathbf{r'}) \times( \mathbf{r}- \mathbf{r'})}{| \mathbf{r} -  \mathbf{r'}|^3} d^3 \mathbf{r'}
+\end{eqnarray}
+\begin{comment}
+  Enačba za električni tok:
+\begin{eqnarray}
+   \mathbf{j}( \mathbf{r}) = \oint I d \mathbf{r'}
+\end{eqnarray}
+\end{comment}
+Električni tok je konstanten po vodniku in za gostoto magnetnega polja dobimo enačbo
+\begin{eqnarray}
+   \mathbf{H}(\mathbf{r}) = \frac{I}{4\pi}\oint\frac{ d^3\mathbf{r'} \times( \mathbf{r}- \mathbf{r'})}{| \mathbf{r} -  \mathbf{r'}|^3}
+\end{eqnarray}
+
+%Informacijo o magnetnem polju lahko dobimo tudi iz vektorskega potenciala, ki je definiran prek enačbe:
+Ker je divrgenca magnetnega polja enaka nič, ga lahko zapišemo kot rotor nekega vektorskega potenciala $\mathbf{A}$.
+\begin{eqnarray}
+  \mathbf{B} = \nabla \times \mathbf{A}
+\end{eqnarray}
+V statičnem približku so vse tokovne zanke sklenjene, zato je $\mathbf{\nabla}\mathbf{j} = 0$. Ko z operatorjem $\mathbf{\nabla}$ delujemo na Maxwellovo (Amperovo) enačbo za rotor magnetnega polja $\mathbf{\nabla} \times \mathbf{B} = \frac{\partial \mathbf{B}}{\partial t} + \mathbf{j}$ dobimo, v statičnem približku, ko je tudi vsak časovni odvod enak nič, Poissonovo enačbo
+\begin{eqnarray}
+  \nabla^2 \mathbf{A} = - \mu_0 \mathbf{j}
+\end{eqnarray}
+Enačbo rešimo z Greenovo funkcijo. V neskončnem prostoru je njena rešitev Kirchhoffova enačba
+\begin{eqnarray}
+  \label{eq:vektpotencial}
+  \mathbf{A}(\mathbf{r}) = \frac{\mu_o}{4\pi}\int_V \frac{\mathbf{j}(\mathbf{r'}) d^3 \mathbf{r'}}{ |\mathbf{r - r'}| } = \frac{\mu_0}{4 \pi} \int \frac{I \mathbf{t} dl}{|\mathbf{r} - \mathbf{r}(l)|}
+\end{eqnarray}
+Izraz električni tok po ravni žici lahko zapišemo kot
+\begin{eqnarray}
+  \mathbf{j(r)}d^3\mathbf{r} = I \mathbf{t} dl
+\end{eqnarray}
+
+
+\section{Postopek reševanja}
+
+Načrt reševanja problema je bil vnaprej jasen. Najprej sem določil geometrijo sistema s pomočjo skic. Nato sem matematično nastavil problem. Integral po zaključeni poti, po naši zanki, sem zapisal kot vsoto šestih integralov po ravnih stranicah zanke (v posebnem primeru pa samo po štirih). Nato sem analitično rešil problem za poseben primer $\alpha = \pi$ na osi zanke.
+Zadnji korak je bil program, ki mu vnesem poljubno točko prostora in mi izračuna magnetno polje v tej točki.
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi1/skica1.pdf}
+    \caption{$\alpha = \frac{\pi}{3}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi1/skica23.pdf}
+    \caption{$\alpha = \frac{3\pi}{4}$}
+    \label{graf}
+  \end{subfigure}
+  \caption{Skica problema.}
+\end{figure}
+
+\begin{comment}
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafiP/y0_2pi3.png}
+    \caption{$\alpha = \frac{\pi}{3}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafiP/y0_pi.png}
+    \caption{$\alpha = \frac{3\pi}{4}$}
+    \label{graf}
+  \end{subfigure}
+  \caption{Skica problema.}
+\end{figure}
+\end{comment}
+
+% Skice - geometrija
+
+% Analitičen izračun za posebne primere
+
+% Izračun s programom
+
+% Predstavitev rezultatov
+
+\subsection{Iztegnjen kot} % SKICA!!!
+
+Za iztegnjen kot lahko pridemo do analitičnega izraza za magnetno polje na $z$ osi. Zaključen integral po zanki razdelimo na štiri integrale po posameznih delih zanke.
+
+\begin{eqnarray}
+  \mathbf{H}(z)& = & \frac{I}{4\pi}\oint\frac{ d^3\mathbf{r'} \times( \mathbf{r}- \mathbf{r'})}{| \mathbf{r} -  \mathbf{r'}|^3} = \nonumber \\
+& = & \frac{I}{4\pi} ( \int_{-a}^{a} \frac{\mathbf{\hat{j}} \times (-a \mathbf{\hat{i}} -l\mathbf{\hat{j}} + z\mathbf{\hat{k}})}{(z^2 + a^2 + l^2)^{3/2}} dl  +
+\int_{a}^{-a} \frac{\mathbf{-\hat{i}} \times (-l \mathbf{\hat{i}} - a\mathbf{\hat{j}} + z\mathbf{\hat{k}})}{(z^2 + a^2 + l^2)^{3/2}} dl + \nonumber \\
+& + & \int_{a}^{-a} \frac{\mathbf{-\hat{j}} \times (a \mathbf{\hat{i}} -l\mathbf{\hat{j}} + z\mathbf{\hat{k}})}{(z^2 + a^2 + l^2)^{3/2}} dl  +
+\int_{-a}^{a} \frac{\mathbf{\hat{i}} \times (-l \mathbf{\hat{i}} + a \mathbf{\hat{j}} + z\mathbf{\hat{k}})}{(z^2 + a^2 + l^2)^{3/2}} dl  )  =  \nonumber \\
+ & = & \frac{I}{4\pi} ( \int_{-a}^{a} \frac{z \mathbf{\hat{i}} + a\mathbf{\hat{k}}}{(z^2 + a^2 + l^2)^{3/2}} dl + 
+\int_{a}^{-a} \frac{z \mathbf{\hat{j}} + a\mathbf{\hat{k}}}{(z^2 + a^2 + l^2)^{3/2}} dl +  \nonumber \\
+ & + & \int_{a}^{-a} \frac{-z \mathbf{\hat{i}} + a\mathbf{\hat{k}}}{(z^2 + a^2 + l^2)^{3/2}} dl + 
+\int_{-a}^{a} \frac{-z \mathbf{\hat{j}} + a\mathbf{\hat{k}}}{(z^2 + a^2 + l^2)^{3/2}} dl ) = \nonumber \\
+& = & \frac{Ia}{\pi} \int_{-a}^a \frac{dl}{(z^2 + a^2 + l^2)^{3/2}} \mathbf{\hat{k}} = 
+\frac{I}{\pi} \frac{2a^2}{(a^2 + z^2)\sqrt{2a^2 + z^2}} \mathbf{\hat{k}}
+\end{eqnarray}
+
+Rezultat je (bil) uporaben za preverjanje pravilnosti delovanja programa, ki izračuna magnetno polje za poljuben kot. 
+
+Približka za
+\begin{itemize}
+\item $a >> z$: $\;\;\; \mathbf{H(z)} = \frac{I\sqrt{2}}{\pi a} \mathbf{\hat{k}}$
+\item $z >> a$: $\;\;\; \mathbf{H(z)} = \frac{I2a^2}{\pi z^3} \mathbf{\hat{k}}$
+\end{itemize}
+
+Magnetno polje (prav tako tudi indukcija) z oddaljenostjo pada s tretjo potenco.
+
+Rezultat se uporablja v Radio-frekvenčni identifikaciji (RFID), kjer imamo dostikrat iztegnjene zanke pravokotnih oblik, le da imamo več kolobarjev, kar rezultaltat zmnoži s številom ovojev. RFID deluje na podlagi medsebojne indukcije. 
+
+Tak način identifikacije naj bi v prihodnosti izodrinil črtne kode, že sedaj pa se uporablja pri identifikaciji nekaterih izdelkov in domačih živali.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=40mm]{grafi1/rfidlabel2.jpg}
+  \caption{RFID čip.}
+  \label{Slika}
+\end{figure}
+
+
+\subsection{Poljuben kot}
+
+Zaključen integral bomo razdelili na šest segmentov. %SKICA!!!
+Polovica zanke vedno leži v $xy$ ravnini, zato bo polovica integrala vedno enaka.
+\begin{eqnarray}
+  \mathbf{H}(\mathbf{r})& = & \frac{I}{4\pi}\oint\frac{ d^3\mathbf{r'} \times( \mathbf{r}- \mathbf{r'})}{| \mathbf{r} -  \mathbf{r'}|^3} =  \nonumber \\
+& = & \int_0^a\frac{\mathbf{\hat{i}} \times (\mathbf{r} - \mathbf{r'_1})}{ |\mathbf{r} - \mathbf{r'_1} |^3}dl + \int_{-a}^a\frac{\mathbf{\hat{j}} \times (\mathbf{r} - \mathbf{r'_2}) }{ |\mathbf{r} - \mathbf{r'_2} |^3} dl + \int_a^0 \frac{\mathbf{\hat{i}} \times (\mathbf{r- r'_3)}}{ | \mathbf{r - r'_3} |^3} dl \nonumber \\
+& + & \int_0^a\frac{\mathbf{\hat{c}} \times (\mathbf{r} - \mathbf{r'_4})}{ | \mathbf{r - r'_4} |^3} dl + \int_{-a}^a\frac{\mathbf{\hat{i}} \times (\mathbf{r} - \mathbf{r'_5})}{ | \mathbf{r - r'_5} |^3} dl + \int_a^0\frac{\mathbf{\hat{c}} \times (\mathbf{r} - \mathbf{r'}_6)}{ | \mathbf{r - r'_6} |^3} dl  \nonumber
+\end{eqnarray}
+\begin{eqnarray}
+\mathbf{\hat{c}} & = & (\cos \alpha, 0, \sin \alpha) \nonumber \\
+\mathbf{r'_1} & = & (l, -a, 0) \;\;\;\;\;\;     \mathbf{r'_4}  = (l\cos \alpha, a, l\sin \alpha) \nonumber \\
+\mathbf{r'_2} & = & (a, l, 0)  \;\;\;\;\;\;\;\;\;  \mathbf{r'_5}  = (a \cos \alpha, l, a\sin \alpha) \nonumber \\
+\mathbf{r'_3} & = & (l, a, 0)  \;\;\;\;\;\;\;\;\;  \mathbf{r'_4}  = (l\cos \alpha, -a, l\sin \alpha) \nonumber 
+\end{eqnarray}
+Računal sem tudi za vsako koordinato posebej, tako da je končni rezultat pravzaprav sestavljen iz 18-ih integriranj (nekateri integrali so enaki nič - tisti deli, kjer je smer el. toka vzporedna s koordinatno osjo).
+
+\begin{eqnarray}
+\mathbf{H}(\mathbf{r}) & = & \mathbf{H}_I(\mathbf{r}) + \mathbf{H}_{II}(\mathbf{r}) + \mathbf{H}_{III}(\mathbf{r}) + \mathbf{H}_{IV}(\mathbf{r}) + \mathbf{H}_{V}(\mathbf{r}) + \mathbf{H}_{VI}(\mathbf{r})  \nonumber \\
+\mathbf{H}_I(\mathbf{r})& = & \frac{I}{4\pi}\int_0^a\frac{(0, -z, y+a)}{((x-l)^2 + (y+a)^2 + z^2)^{\frac{3}{2}}}\nonumber \\
+\mathbf{H}_{II}(\mathbf{r}) & = & \frac{I}{4\pi}\int_{-a}^a\frac{(z, 0, -x+a)}{((x-a)^2 + (y-l)^2 + z^2)^{\frac{3}{2}}}\nonumber \\
+\mathbf{H}_{III}(\mathbf{r})& = & \frac{I}{4\pi}\int_{a}^0\frac{(0, z, -y+a)}{((x-l)^2 + (y-a)^2 + z^2)^{\frac{3}{2}}}\nonumber \\
+\mathbf{H}_{IV}(\mathbf{r})& = & \frac{I}{4\pi}\int_{0}^a\frac{(\sin{\alpha}(-y +a), \sin{\alpha}(x - l\cos{\alpha}) - \cos{\alpha}(z - l\sin{\alpha}), \cos{\alpha}(y-a))}{((x-l\cos{\alpha})^2 + (y-a)^2 + (z-l\sin{\alpha})^2)^{\frac{3}{2}}}\nonumber \\
+\mathbf{H}_{V}(\mathbf{r}) & = & \frac{I}{4\pi}\int_{-a}^a\frac{(-z + a\sin{\alpha}, 0,x -a \cos{\alpha})}{((x-a\cos{\alpha})^2 + (y-l)^2 + (z-l\sin{\alpha})^2)^{\frac{3}{2}}}\nonumber \\
+\mathbf{H}_{VI}(\mathbf{r}) & = & \frac{I}{4\pi}\int_{a}^0\frac{((y+a)\sin{\alpha},\cos{\alpha}(z - l\sin{\alpha}) - \sin{\alpha}(x - l\cos{\alpha}) , (y+a)\cos{\alpha})}{((x-a\cos{\alpha})^2 + (y-l)^2 + (z-l\sin{\alpha})^2)^{\frac{3}{2}}}\nonumber
+\end{eqnarray}
+
+Končne rezultate sem dobil z numeričnim računanjem. Delal sem s programskim jezikom Python - knjižnici \texttt{NumPy} in \texttt{SciPy}. %Iz zgornjih šestih integralov sem zapisal 18 funkcij (za vsako komponento magnetnega polja posebej), vendar so vsaj tri od teh funkcij enake nič. 
+Teh 18 funkcij sem nato integriral z rutino \texttt{quad}, vgrajeno v SciPy \texttt{integrate}.
+
+Največji izziv mi je predstavljala vizualizacija podatkov. Meni najljubše orodje \texttt{GnuPlot} se je izkazalo za prezahtevno - preveč je parametrov, ki jih je treba upoštevati. Za grafe na \textit{sliki 3} je bila potrebna precej dolga skripta. Nato sem uporabil \texttt{MatPlotLib}, python knjižnico za \texttt{NumPy} in \texttt{SciPy}. Dela malce lepše grafe v smislu, da so linije bolj ostre in barve se lažje definirajo, vendar je za grafa, ki sta na \textit{sliki 4}, potrebno, po mojem mnenju, še vedno nesorazmerno veliko programiranja.
+
+Na koncu sem odkril program \texttt{ParaView}, ki ima preprost grafični vmesnik (prejšnji orodji ga nimata), in tako je nastala zadnja serija grafov. Potrebno je bilo le še učenje strukture \texttt{.vtk} dokumenta, ki jih izrisuje \texttt{ParaView}.
+
+\FloatBarrier
+\pagebreak
+
+\section{Rezultati}
+\FloatBarrier
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    %\includegraphics[scale=0.35]{grafi1/vse_03_10.pdf}
+    \includegraphics[width=\textwidth]{grafi1/vse_03_10.pdf}
+    \caption{$\alpha = \frac{\pi}{10}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi1/vse_06_10.pdf}
+    \caption{$\alpha = \frac{\pi}{5}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi1/vse_09_10.pdf}
+    \caption{$\alpha = \frac{3\pi}{10}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi1/vse_12_10.pdf}
+    \caption{$\alpha = \frac{2\pi}{5}$}
+    \label{graf}
+  \end{subfigure}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi1/vse_15_10.pdf}
+    \caption{$\alpha = \frac{\pi}{2}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi1/vse_18_10.pdf}
+    \caption{$\alpha = \frac{3\pi}{5}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi1/vse_21_10.pdf}
+    \caption{$\alpha = \frac{7\pi}{10}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi1/vse_25_10.pdf}
+    \caption{$\alpha = \frac{4\pi}{5}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi1/vse_28_10.pdf}
+    \caption{$\alpha = \frac{9\pi}{10}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi1/vse_31_10.pdf}
+    \caption{$\alpha = \pi$}
+    \label{graf}
+  \end{subfigure}
+  \caption{Grafi nekaterih magnetnih silnic za različne kote prepogiba zanke. Grafi so precej majhni, zato priporočam, da se jih ogleda na čim večji povečavi.}
+\end{figure}
+\pagebreak
+
+\begin{figure}[h]
+\hspace{-10pt}
+  \begin{subfigure}[b]{0.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafiP/y0_pi4.png}\includegraphics[width=\textwidth]{grafiP/f2_pi4.png}
+    \caption{$\alpha = \frac{\pi}{4}$}
+    \label{graf}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[h]
+\vspace{-50pt}
+%\hspace{-10pt}
+  \begin{subfigure}[b]{0.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafiP/y0_pi2.png}\includegraphics[width=\textwidth]{grafiP/f2_pi2.png}
+    \caption{$\alpha = \frac{\pi}{2}$}
+    \label{graf}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[h]
+\vspace{-50pt}
+%\hspace{-10pt}
+  \begin{subfigure}[b]{0.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafiP/y0_3pi4c.png}\includegraphics[width=\textwidth]{grafiP/f2_3pi4.png}
+    \caption{$\alpha = \frac{3\pi}{4}$}
+    \label{graf}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[h]
+\vspace{-50pt}
+%\hspace{-10pt}
+  \begin{subfigure}[b]{0.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafiP/y0_pi.png}\includegraphics[width=\textwidth]{grafiP/f2_pi.png}
+    \caption{$\alpha = \pi$}
+    \label{graf}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[h]
+\vspace{-50pt}
+%\hspace{-10pt}
+  \begin{subfigure}[b]{0.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafiP/y0_5pi4.png}\includegraphics[width=\textwidth]{grafiP/f2_5pi4.png}
+    \caption{$\alpha = \frac{5\pi}{4}$}
+    \label{graf}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[h]
+\vspace{-50pt}
+%\hspace{-10pt}
+  \begin{subfigure}[b]{0.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafiP/y0_3pi2.png}\includegraphics[width=\textwidth]{grafiP/f2_6pi4.png}
+    \caption{$\alpha = \frac{3\pi}{2}$}
+    \label{graf}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[h]
+\vspace{-50pt}
+%\hspace{-10pt}
+  \begin{subfigure}[b]{0.5\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafiP/y0_7pi4.png}\includegraphics[width=\textwidth]{grafiP/f2_7pi4.png}
+    \caption{$\alpha = \frac{7\pi}{4}$}
+    \label{graf}
+  \end{subfigure}
+  \caption{Grafi, ki omogočajo kvantitativno razbiranje. Prikazujejo gostoto silnic oziroma velikost magnetnega polja v logaritemski skali. Grafi v levem stolpcu prikazujejo prerez pri y = 0, desni stolpec pa ravnino, v kateri leži os zanke in abscisna os. Silnice v obeh primerih ležijo v ravninah.}
+\end{figure}
+
+
+
+
+\FloatBarrier
+\subsection{Silnice}
+Grafi $(a) - (j)$ s slike 3 prikazujejo deset tokovnic skozi enakomerno razporejene točke na $xy$ ravnini. Rezultat je simetričen glede na $xz$ ravnino, zato sem začetne točke zavoljo večje preglednosti izbral samo na eni strani te ravnine.
+
+Koordinatno izhodišče vedno prebada silnica, ki je premica (zaključena v neskončnosti, ker so silnice magnetnega polja vedno zaključene), in je nagnjena za kot $\frac{\alpha}{2}$ glede na $x$ os. 
+
+Grafi s slike 3 nam sicer povejo nekaj o smeri magnetnega polja, a ne omogočajo kvantitavnega razbiranja. Zato sem narisal izohipse magnetnega polja v dveh različnih ravninah (v logaritemski skali). Silnice magnetnega polja ležijo v ravninah, leva je $xz$ ravnina pri $y = 0$, desna pa je ravnina z normalo $\mathbf{n} = (cos(\frac{\alpha}{2}), 0, sin(\frac{\alpha}{2}))$.  Ravnini sta prikazani na sliki 5. 
+
+\begin{figure}[h]
+\hspace{-50pt}
+  \begin{subfigure}[b]{0.6\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafiP/slika1a.png}\includegraphics[width=\textwidth]{grafiP/slika2.png}
+    %\caption{$\alpha = \frac{\pi}{4}$}
+    \label{graf}
+  \end{subfigure}
+  \caption{Ravnini, v katerih ležijo magnetne silnice. Modra ponazarja levi stolpec v grafih s slike 4, rdeča pa desni stolpec.}
+\end{figure}
+
+Za iztegnjen kot sta sliki gostote silnic identični, saj imamo simetrijo, kar se vidi tudi na levem grafu slike 5. 
+
+Edina ravnina, ki jo silnice prebadajo pod pravim kotom je pri popolnoma iztegnjeni zanki. 
+
+% RAVNINA, ki jo silnice prebadajo pravokotno??? Lahko naredim ubistvu zlepek dveh prelomljenih ravnin...
+% NE pogledat moram vektorski potencial... LP Adijo
+
+
+\subsection{Velikost polja na osi zanke}
+Iskal sem še druge načine prikaza magnetnega polja, predvsem me je motilo, da silnice ne pokažejo velikosti magnetnega polja. Zato sem narisal tridimenzionalna grafa za velikost poja na z osi in velikost polja na osi zanke v odvisnosti od kota pregiba. Prvi graf nam ne pove veliko, je pa drugi zato bolj ilustrativen. Magnetno polje, če tok teče v smeri urinega kazalca, kaže v smeri osi zanke in narašča, ko se približujemo dolgima robovoma in pada, ko se od njiju oddaljujemo. %Maximum velikosti magnetnega polja je torej pri $a\cos{\alpha/2}$. % je to res? NI:)
+Maximum magnetnega polja leži na $y$ osi na sredini med točkama $T_1 (a, 0, 0)$ in $T_2 (a \cos \alpha, 0, a \sin \alpha)$. Maximum je torej v točki $T_{max} (\frac{a(\cos \alpha +1)}{2}, 0, \frac{a \sin \alpha}{2})$, ki je $\frac{\sqrt{2}}{2}a \sqrt{\cos \alpha +1}$ oddaljena od koordinatnega izhodišča. To sem preveril tudi z grafom $(c)$ na sliki 4. 
+
+Grafa $(a)$ in $(b)$ s slike $4$ sta me spodbudili k razmišljanju, za kateri kot zanke je polje na osi zanke najbolj daljnosežno. Predvideval sem, da bo to za iztegnjeno zanko, saj se v tem primeru na osi seštejejo vsi štirje robovi zanke, a zmedla me je krivulja na grafu $(b)$, ki ima pri fiksni oddaljenosti od izhodišča $L = 4$ očiten maximum pri kotu okrog $\frac{\pi}{2}$.
+
+Narisal sem precej grafov in jih analiziral. Najprej velikost polja na srednjici zanke za nekaj različnih kotov (in logaritem velikosti). V takih $2D$ grafih je lažje primerjati krivulje med sabo. Maximumi so očitno večji za manjše kote pregiba in premaknjeni so bližje $1$ (oziroma $a$), a hitreje padajo (saj se prispevka prepognjenih robov izničita, ker sta tokovna vodnika skoraj vzporedna). Potem sem grafe premaknil po razdalji od izhodišča za predviden maximum pri posameznem kotu.
+
+Izkaže se, da je intuicija imela prav. Velikost maximuma magnetnega polja je sicer večja za manjše kote pregiba, vendar z oddaljenostjo od maximuma tudi hitreje pada. Pojasnilo, zakaj ima krivulja, ki orisuje rob grafa $(b)$, maximum pri kotu, ki ni enak $\pi$, pa je, da so maximumi premaknjeni iz izhodišča koordinatnega sistema, za manjše kote pregiba, medtem, ko so pri bolj iztegnjenih kotih premeknjeni nazaj.
+
+%Na grafu $(c)$ so za majhne kote vidni še neki odmiki od predvidene lege, neka čudna vdolbina, ki se je ne znam pojasniti. Graf pridobljen numerično je narisan v absolutni vrednosti, saj se zanka prepogne nazaj, pri kotih večjih od $\pi$. To pomeni, da je za zelo oster kot, numerično izračunan kot bližje izhodišču (kot predvideno), za kot malce manjši od $2\pi$, pa je še dalj kot je dolžina samega roba zanke.
+%Sem rešil - težava je bila v tem, da sem polju, ki je vecji od 20 pripisal vrednost 20, da nisem imel singularnosti
+
+Za konec sem narisal še grafe v programu paraView, ki omogoča naslednjo stopnjo prikazovanja od \texttt{gnuplot}a, in iz grafov naredil animacijo, kjer se s časom spreminja kot pregiba zanke. Grafi pokažejo, da je polja $"$več$"$ za bolj iztegnjeno zanko, kar je povsem logično. 
+
+\begin{comment}
+    \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi1/absh_sos_prav200.pdf}
+    %\caption{$\alpha = \frac{\pi}{5}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi1/absh_sos_log2.pdf}
+    %\caption{$\alpha = \frac{\pi}{5}$}
+    \label{graf}
+  \end{subfigure}
+\end{comment}
+
+\begin{figure}[h]
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi1/z_absh.pdf}
+    \caption{}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi1/z_absh_log2.pdf}
+    \caption{}
+    \label{graf}
+  \end{subfigure}
+  %\centering
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi1/absh_sos_prav200.pdf}
+    \caption{}
+    %\caption{$\alpha = \frac{\pi}{5}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi1/z_odd_por_log.pdf}
+    \caption{}
+    %\caption{$\alpha = \frac{\pi}{5}$}
+    \label{graf}
+  \end{subfigure}
+  \caption{Grafi velikosti magnetnega polja na osi zanke (levo v navadni skali, desno pa v logaritemski).}
+\end{figure}
+
+
+\FloatBarrier
+%Vizualizacija podatkov mi je predstavljala velik problem. Začel sem z gnuplotom, v katerem sem narisal grafe s silnicami. 
+
+\begin{comment}
+\begin{figure}[h]
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi1/z_odd.pdf}
+    %\caption{$\alpha = \frac{\pi}{5}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi1/z_odd_log.pdf}
+    %\caption{$\alpha = \frac{\pi}{5}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi1/z_odd_por.pdf}
+    %\caption{$\alpha = \frac{\pi}{5}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi1/z_odd_por_log.pdf}
+    %\caption{$\alpha = \frac{\pi}{5}$}
+    \label{graf}
+  \end{subfigure}
+\end{figure}
+\end{comment}
+
+
+
+
+
+
+
+%Preveril sem še približka, ki sem ju izračunal za iztegnjen kot.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ParaView %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    %\includegraphics[scale=0.35]{grafi1/vse_03_10.pdf}
+    \includegraphics[width=\textwidth]{grafi3/z000.jpg}
+    \caption{$\alpha = 0$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi3/z031.jpg}
+    \caption{$\alpha = \frac{\pi}{10}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi3/z062.jpg}
+    \caption{$\alpha = \frac{\pi}{5}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi3/z094.jpg}
+    \caption{$\alpha = \frac{3\pi}{10}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi3/z125.jpg}
+    \caption{$\alpha = \frac{2\pi}{5}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi3/z157.jpg}
+    \caption{$\alpha = \frac{\pi}{2}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi3/z188.jpg}
+    \caption{$\alpha = \frac{3\pi}{5}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi3/z219.jpg}
+    \caption{$\alpha = \frac{7\pi}{10}$}
+    \label{graf}
+  \end{subfigure}
+\end{figure}
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi3/z251.jpg}
+    \caption{$\alpha = \frac{4\pi}{5}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi3/z282.jpg}
+    \caption{$\alpha = \frac{9\pi}{10}$}
+    \label{graf}
+  \end{subfigure}
+    \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi3/z314.jpg}
+    \caption{$\alpha = \pi$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi3/z345.jpg}
+    \caption{$\alpha = \frac{11\pi}{10}$}
+    \label{graf}
+  \end{subfigure}  
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi3/z439.jpg}
+    \caption{$\alpha = \frac{7\pi}{5}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi3/z471.jpg}
+    \caption{$\alpha = \frac{3\pi}{5}$}
+    \label{graf}
+  \end{subfigure}
+    \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi3/z502.jpg}
+    \caption{$\alpha = \frac{8\pi}{5}$}
+    \label{graf}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.49\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{grafi3/z534.jpg}
+    \caption{$\alpha = \frac{17\pi}{10}$}
+    \label{graf}
+  \end{subfigure}  
+  \caption{Grafi v paraView-u. Velikost mag polja v posamezni tocki je ponazorjena z velikostjo in barvo črte, smer polja pa je enaka smeri črte.}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+\begin{comment}
+\begin{figure}
+\vspace{-40pt}
+%\centering
+%\includegraphics[scale=0.35]{grafi1/vse_00_10.pdf}
+\hspace{-70pt}
+\includegraphics[scale=0.35]{grafi1/vse_00_10.pdf}\includegraphics[scale=0.35]{grafi1/vse_03_10.pdf}
+\hspace{-70pt}
+\includegraphics[scale=0.35]{grafi1/vse_06_10.pdf}\includegraphics[scale=0.35]{grafi1/vse_09_10.pdf}
+
+\vspace{-30pt}
+\caption{}
+\label{Graf}
+\end{figure}
+
+\begin{figure}
+\vspace{-40pt}
+%\centering
+%\includegraphics[scale=0.35]{grafi1/vse_00_10.pdf}
+\hspace{-70pt}
+\includegraphics[scale=0.35]{grafi1/vse_12_10.pdf}\includegraphics[scale=0.35]{grafi1/vse_15_10.pdf}
+\hspace{-70pt}
+\includegraphics[scale=0.35]{grafi1/vse_18_10.pdf}\includegraphics[scale=0.35]{grafi1/vse_21_10.pdf}
+\vspace{-30pt}
+\caption{}
+\label{Graf}
+\end{figure}
+
+\begin{figure}
+\vspace{-40pt}
+%\centering
+%\includegraphics[scale=0.35]{grafi1/vse_00_10.pdf}
+\hspace{-70pt}
+\includegraphics[scale=0.35]{grafi1/vse_25_10.pdf}\includegraphics[scale=0.35]{grafi1/vse_28_10.pdf}
+\hspace{-70pt}
+\includegraphics[scale=0.35]{grafi1/vse_31_10.pdf}\includegraphics[scale=0.35]{grafi1/vse_31_10.pdf}
+\vspace{-30pt}
+\caption{}
+\label{Graf}
+\end{figure}
+%\includegraphics[scale=0.45]{grafi1/vse_00_10.pdf}\includegraphics[scale=0.45]{grafi1/vse_03_10.pdf}
+%\includegraphics[scale=0.45]{grafi1/vse_06_10.pdf}\includegraphics[scale=0.45]{grafi1/vse_09_10.pdf}
+%\includegraphics[scale=0.45]{grafi1/vse_12_10.pdf}\includegraphics[scale=0.45]{grafi1/vse_15_10.pdf}
+%\includegraphics[scale=0.45]{grafi1/vse_18_10.pdf}\includegraphics[scale=0.45]{grafi1/vse_21_10.pdf}
+%\includegraphics[scale=0.45]{grafi1/vse_25_10.pdf}\includegraphics[scale=0.45]{grafi1/vse_28_10.pdf}
+%\includegraphics[scale=0.45]{grafi1/vse_31_10.pdf}\includegraphics[scale=0.45]{grafi1/vse_31_10.pdf}
+\end{comment}
+
+
+
+\begin{comment}
+
+\begin{figure}
+\vspace{-40pt}
+\centering
+
+\includegraphics[scale=0.45]{}
+\vspace{-30pt}
+\caption{}
+\label{Graf}
+\end{figure}
+
+
+\vspace{10pt}
+\hspace{-35pt}
+\[
+\begin{array}{|cc||cc|cc|cc|cc|}
+
+\hline
+ & & & & & & & & \
+\hline
+\end{array}\]
+\vspace{10pt}
+
+
+
+\end{comment}
+
+\end{document}

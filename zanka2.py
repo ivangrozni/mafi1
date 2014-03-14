@@ -45,6 +45,33 @@ def H(r, fi, a=1.0, I=1.0):
     #h = h*I/(4*ma.pi)
     return h
 
+def AA(r, fi, a=1.0, I=1.0):
+    """Input: r - (x, y, z), fi, a, I ((((aaarrrgggghhh))))
+    """
+    ax = 0.0
+    ay = 0.0
+    az = 0.0
+    args = ([a, fi, r])
+    for i in range(1, 7):
+        x1, x2 = meje(i-1, a)
+        for s in ("x", "y", "z"):
+            #funkcija = globals()["podint"+str(i)+s]
+            funkcija = getattr(zp, "apodint"+str(i)+s) # tako pa v modulu zp
+            #print funkcija
+            integral = quad(funkcija, x1, x2, args)
+            if s=="x":
+                ax += integral[0]
+                #print "hx", i, hx
+            elif s=="y":
+                ay += integral[0]
+                #print "\thy", i, hy
+            elif s=="z":
+                az += integral[0]
+                #print "\t\thz", i, hz
+    aa = np.array([ax, ay, az])
+    #h = h*I/(4*ma.pi)
+    return aa
+
 def Htest(r, fi, a=1.0, I=1.0):
     hxs, hys, hzs, hxsa, hysa, hzsa = np.array([]), np.array([]), np.array([]), np.array([]), np.array([]), np.array([])
     args = ([a, fi, r])

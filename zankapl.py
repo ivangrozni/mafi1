@@ -6,6 +6,7 @@ import math as ma
 import numpy as np
 import scipy as sps
 import matplotlib.pyplot as plt
+import pylab
 #from scipy.integrate import quad
 import zankapi as zp
 import zanka2 as zd
@@ -17,6 +18,8 @@ from matplotlib.patches import FancyArrowPatch
 from mpl_toolkits.mplot3d import proj3d
 
 from matplotlib import cm # colormap
+
+
 
 class Arrow3D(FancyArrowPatch):
     def __init__(self, xs, ys, zs, *args, **kwargs):
@@ -44,24 +47,7 @@ def kot(fi, a = 1.0, st_tock=100):
     return RR
 
 def zanka(fi = 1.57, risi=True):
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
-    
-    
-    RR = narisi_zanko(fi, 10, 1.0, False)
-    
-    ax.plot(RR[:, 0], RR[:, 1], RR[:, 2], color='red', linewidth=2.0)
-
-    ax.set_xlabel('X')
-    ax.set_ylabel('Y')
-    ax.set_zlabel('Z')
-    if risi==False: return ax
-    a = Arrow3D([1.1,1.1],[-0.5,0.5],[0,0], mutation_scale=20, lw=1, arrowstyle="-|>", color="k")
-    ax.add_artist(a)
-
-    RR = kot(fi, 1.0, 100)
-    ax.plot(RR[:, 0], RR[:, 1], RR[:, 2], color='black', linewidth=0.8)
-    
+    """
     ax.text(0.2*ma.cos(fi/2), 1.0, 0.2*ma.sin(fi/2.0), r'$\alpha$', color='black')
     
     ax.text(1.22, 0.0, 0.0, 'tok', color='black')
@@ -77,7 +63,55 @@ def zanka(fi = 1.57, risi=True):
     ax.set_ylim3d(-1.2, 1.2)
     ax.set_xlim3d(-1.2, 1.2)
 
+    """
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    
+    RR = zd.narisi_zanko(fi, 10, 1.0, False)
+    
+    ax.plot(RR[:, 0], RR[:, 1], RR[:, 2], color='red', linewidth=2.0)
+
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+    if risi==False: return ax
+    a = Arrow3D([1.1,1.1],[-0.5,0.5],[0,0], mutation_scale=20, lw=1, arrowstyle="-|>", color="k")
+    ax.add_artist(a)
+
+    RR = kot(fi, 1.0, 100)
+    ax.plot(RR[:, 0], RR[:, 1], RR[:, 2], color='black', linewidth=0.8)
+    
+    
+    # Rabim ravnino X, Y, Z
+    X1 = np.linspace(-1.5, 1.5, 100)
+    Z1 = np.linspace(-1.5, 1.5, 100)
+    Y1 = np.zeros([100, 100])
+    XX1, ZZ1 = np.meshgrid(X1, Z1)
+    
+    ax.plot_surface(XX1, Y1, ZZ1, alpha=0.3, color="blue", linewidth=0)
+    # Druga ravnina
+    Y2 = np.linspace(-1.5, 1.5, 100)
+    T2 = np.linspace(-1.5, 1.5, 100)
+    YY2, TT2 = np.meshgrid(Y2, T2)
+    XX2, ZZ2 = ma.cos(fi/2)*TT2, ma.sin(fi/2)*TT2 
+    
+    ax.plot_surface(XX2, YY2, ZZ2, alpha=0.3, color="red", linewidth=0)
+
+    # se crte...
+    X = [np.linspace(-1.5, 1.5, 100), np.zeros(100), np.zeros(100)]
+    Y = [np.zeros(100), np.linspace(-1.5, 1.5, 100), np.zeros(100)]
+    Z = [np.zeros(100), np.zeros(100), np.linspace(-1.5, 1.5, 100)]
+    T = [np.linspace(-1.5, 1.5, 100), np.zeros(100), np.linspace(-1.5, 1.5, 100)]
+    ax.plot(X[0], X[1], X[2], linewidth=0.3, color="b")
+    ax.plot(Y[0], Y[1], Y[2], linewidth=0.3, color="r")
+    ax.plot(Z[0], Z[1], Z[2], linewidth=0.3, color="g")
+    ax.plot(T[0]*ma.cos(fi/2), T[1], T[2]*ma.sin(fi/2), linewidth=0.3, color="k")
+    
+    #plt.xlim([-2.0, 2.0])
+    #plt.ylim([-2.0, 2.0])
+    #plt.zlim([-2.0, 2.0])
     plt.show()
+
     return None
 
 def podatki(fi, a=1.0, I=1.0):
@@ -107,7 +141,7 @@ def graf1(fi, RR, HH):
     #ax = zanka(fi, False) # risem zanko
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    z = narisi_zanko(fi, 10, 1.0, False)
+    z = zd.narisi_zanko(fi, 10, 1.0, False)
     ax.plot(z[:, 0], z[:, 1], z[:, 2], color='black', linewidth=2.0)
 
     ax.set_xlabel('X')
@@ -154,6 +188,7 @@ def pdatki2(st_tock, st_kotov=100):
     return Z, FI, REZ
 
 def generate(z, fi, a=1.0, I=1.0):
+    """ Mag polje na z osi """
     h = zd.H([0.0, 0.0, z], fi, a, I)
     hn = ma.sqrt(zd.norma2(h))
     if hn > 20:
@@ -161,15 +196,17 @@ def generate(z, fi, a=1.0, I=1.0):
     return hn
 
 def generate2(l, fi, a=1.0, I=1.0):
+    """ Mag polje na srednici """
     x = l*ma.cos(fi/2.0)
     z = l*ma.sin(fi/2.0)
     h = zd.H([x, 0.0, z], fi, a, I)
     hn = ma.sqrt(zd.norma2(h))
-    if hn > 20:
-        return 20
+    #if hn > 20:
+        #return 20
     return hn
 
 def graf2(ztock = 50, fitock=50):
+    """ Narise graf Hmax(kota) """
     plt.ion()
     fig = plt.figure()
     #ax = fig.add_subplot(111, projection='3d')
@@ -281,10 +318,8 @@ def graf_max(ztock = 100, fitock=100):
     zs = np.linspace(-1.5, 1.5, ztock)
     fs = np.linspace(0, 2*ma.pi, fitock)
     ZS, FS = np.meshgrid(zs, fs)
-    
     REZ = [np.zeros(fitock)]
     ZMAX = []
-
     for i in range(ztock):
         H = []
         for j in range(fitock): # spreminjam oddaljenost od
@@ -294,8 +329,8 @@ def graf_max(ztock = 100, fitock=100):
         # itemindex = np.where(array==item)[0][0]
         # nonzero(array == item)[0][0]
         itemindex = np.where(H==max(H))[0][0]
-        np.nonzero(H == max(H))[0][0]
-        # print itemindex, zs[int(itemindex)]
+        #np.nonzero(H == max(H))[0][0] # Kaj tole naredi???
+        #print H[itemindex-3 : itemindex+3], itemindex, zs[int(itemindex)] # napaka - 20 je bila povsod...
         ZMAX = np.append(ZMAX, zs[int(itemindex)])
 
         REZ = np.concatenate((REZ, [H]), axis=0)
@@ -308,10 +343,15 @@ def graf_max(ztock = 100, fitock=100):
     # Grem po stolpcih in poiscem index-e maximumov
     # Potem vrnem narisem tabelo max v odvisnosti od kota pregiba.
     # Ni kul, ker se mi spreminjata sproti obe stvari - oddaljenost in polje, al kaj
-    
-
-    
-
+    plt.plot(fs, np.fabs(ZMAX), label="numericno")
+    plt.plot(fs, np.fabs(ana), label="analiticno")
+    #plt.legend(loc=9)
+    plt.grid()
+    plt.legend(loc=9)
+    plt.ylabel("kot pregiba")
+    plt.xlabel("L/a")
+    plt.title("Lega Hmax na osi zanke")
+    plt.show()
     return ZMAX, ana, zs
 
 
@@ -550,6 +590,94 @@ ax.set_zlabel('Z Label')
 plt.show()
 """
 
+############################## prerezi ##############################
+############################## prerezi ##############################
+############################## prerezi ##############################
 
+def prerez1(sttock, fi, a = 1.0, I = 1.0, wr=False):
+    """Narise graf velikosti H (gosotote silnic) na prerezu v katerem lezijo silnice, torej y = 0"""
+    plt.ion()
+    fig = plt.figure()
 
+    X = np.linspace(-2*a, 2*a, sttock)
+    Z = np.linspace(-2*a, 2*a, sttock)
+    XX, ZZ = np.meshgrid(X, Z)
+    
+    #f = open("prerez1.txt", 'w')
+    #f.write("# velikost H v prerezu 1\n")
+    
+    HH = [] # tole so posamezni rezultati...
+    REZ = [np.zeros(5)]
+    velH = np.zeros([sttock, sttock])
+    logvelH = np.zeros([sttock, sttock])
+
+    for i in range(sttock):
+        for j in range(sttock):
+            r = [XX[i, j], 0.0, ZZ[i, j] ]
+            hh = zd.H(r, fi, a, I)  # izracunam mag polje
+            HH = [hh[0], hh[1], hh[2], ma.sqrt(zd.norma2(hh)), ma.log(ma.sqrt(zd.norma2(hh)))]
+            REZ = np.concatenate((REZ, [HH]), axis=0)
+            velH[i, j] = HH[3]
+            logvelH[i, j] = HH[4]
+            #if wr: f.write("%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\n"%(X[i], 0.0, Y[i], h[0], h[1], h[2], ma.sqrt(norma(h)), ma.log10(ma.sqrt(norma(h))) ) )
+    REZ = np.delete(REZ, 0, 0)
+
+    # Sedaj imam izracunano mag polje v ravnini - Vem, da je |H| sorazmeren z gostoto silnic... Karkoli
+    #plt.figure()
+    CS = plt.contour(XX, ZZ, logvelH)
+    plt.grid()
+    plt.title("prerez pri y = 0 kot: fi = %.3f"%fi)
+    plt.xlabel("x"), plt.ylabel("z")
+    plt.clabel(CS,inline=1,fontsize=9)            
+    plt.colorbar(CS, shrink=0.8, extend='both')
+
+    return None
+
+def prerez2(sttock, fi, a = 1.0, I = 1.0, wr=False):
+    """Narise graf velikosti H (gosotote silnic) na prerezu, ki ga silnice prebadajo pravokotno, PRAVOKOTNO"""
+    plt.ion()
+    fig = plt.figure()
+
+    #Y = np.linspace(-2*a, 2*a, sttock)
+    #T = np.linspace(-2*a, 2*a, sttock)
+    #YY, TT = np.meshgrid(Y, T)
+
+    X = np.linspace( -2*a, 2*a, sttock)
+    Y = np.linspace( -2*a, 2*a, sttock)
+    Z = np.linspace( -2*a, 2*a, sttock)
+    XX, ZZ = np.meshgrid( X, Z)
+    
+    #f = open("prerez1.txt", 'w')
+    #f.write("# velikost H v prerezu 1\n")
+    
+    HH = [] # tole so posamezni rezultati...
+    REZ = [np.zeros(5)]
+    velH = np.zeros([sttock, sttock])
+    logvelH = np.zeros([sttock, sttock])
+
+    for i in range(sttock):
+        for j in range(sttock):
+            #r = [TT[i, j]*ma.cos(fi/2.0), YY[i, j], TT[i, j]*ma.sin(fi/2.0) ]
+            #r = [XX[i, j], YY[i, j], 0.0 ]
+            r = [XX[i, j], 0.0, ZZ[i, j] ]
+            hh = zd.AA(r, fi, a, I)  # izracunam mag polje
+            if zd.norma2(hh) < 10**-6: hh = [10**-6, 10**-6, 10**-6]
+            
+            HH = [hh[0], hh[1], hh[2], ma.sqrt(zd.norma2(hh)), ma.log(ma.sqrt(zd.norma2(hh)))]
+            REZ = np.concatenate((REZ, [HH]), axis=0)
+            velH[i, j] = HH[3]
+            logvelH[i, j] = HH[4]
+            #if wr: f.write("%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\t%.4f\n"%(X[i], 0.0, Y[i], h[0], h[1], h[2], ma.sqrt(norma(h)), ma.log10(ma.sqrt(norma(h))) ) )
+    REZ = np.delete(REZ, 0, 0)
+
+    # Sedaj imam izracunano mag polje v ravnini - Vem, da je |H| sorazmeren z gostoto silnic... Karkoli
+    #plt.figure()
+    CS = plt.contour(XX, ZZ, logvelH)
+    plt.grid()
+    plt.title("ravnina xy kot: fi = %.3f"%fi)
+    plt.xlabel("x"), plt.ylabel("z")
+    plt.clabel(CS,inline=1,fontsize=9)            
+    plt.colorbar(CS, shrink=0.8, extend='both')
+
+    return None
 

@@ -259,3 +259,98 @@ def podint6zb(l, param):
     return 0.0#-(y+a)/ma.pow((x+l)**2 + (y+a)**2 + z**2, 1.5)
 
 
+
+##############################################################################################
+##############################################################################################
+################################## FI = poljuben #############################################
+############################### Vektorski potencial ##########################################
+##############################################################################################
+##############################################################################################
+
+
+#################### DEL ZANKE 1: ma.pow((x-l)**2 + (y+a)**2 + z**2, 1.5) ####################
+def apodint1x(l, param):
+    """
+    Input: param0 - a, param1 - fi, param2 - r
+    """
+    a = param[0]
+    x, y, z = param[2]
+    return 1.0/ma.pow((x-l)**2 + (y+a)**2 + z**2, 0.5)
+def apodint1y(l, param):
+    a = param[0]
+    x, y, z = param[2]
+    return 0.0
+def apodint1z(l, param):
+    a = param[0]
+    x, y, z = param[2] 
+    return 0.0
+
+#################### DEL ZANKE 2: ma.pow((x-a)**2 + (y-l)**2 + z**2, 1.5) ####################
+def apodint2x(l, param):
+    a = param[0]
+    x, y, z = param[2] 
+    return 0.0
+def apodint2y(l, param):
+    a = param[0]
+    x, y, z = param[2]
+    return 1.0/ma.pow((x-a)**2 + (y-l)**2 + z**2, 0.5)
+def apodint2z(l, param):
+    a = param[0]
+    x, y, z = param[2] 
+    return 0.0
+
+#################### DEL ZANKE 3: ma.pow((x-l)**2 + (y-a)**2 + z**2, 1.5) ####################
+def apodint3x(l, param):
+    a = param[0]
+    x, y, z = param[2]
+    return -1.0/ma.pow((x-l)**2 + (y-a)**2 + z**2, 0.5)
+def apodint3y(l, param):
+    a = param[0]
+    x, y, z = param[2]
+    return 0.0
+def apodint3z(l, param):
+    a = param[0]
+    x, y, z = param[2]
+    return 0.0
+
+#################### DEL ZANKE 4: ma.pow((x-l*ma.cos(fi))**2 + (y-a)**2 + (z -l*ma.sin(fi))**2, 1.5) ####################
+def apodint4x(l, param):
+    a, fi = param[0], param[1]
+    x, y, z = param[2]
+    return ma.cos(fi)/ma.pow((x-l*ma.cos(fi))**2 + (y-a)**2 + (z -l*ma.sin(fi))**2, 0.5)
+def apodint4y(l, param):
+    a, fi = param[0], param[1]
+    x, y, z = param[2]
+    return 0.0
+def apodint4z(l, param):
+    a, fi = param[0], param[1]
+    x, y, z = param[2]
+    return ma.sin(fi)/ma.pow((x-l*ma.cos(fi))**2 + (y-a)**2 + (z -l*ma.sin(fi))**2, 0.5)
+
+#################### DEL ZANKE 5: ma.pow((x-a*ma.cos(fi))**2 + (y-l)**2 + (z -a*ma.sin(fi))**2, 1.5) ####################
+def apodint5x(l, param):
+    a, fi = param[0], param[1]
+    x, y, z = param[2]
+    return 0.0
+def apodint5y(l, param):
+    a, fi = param[0], param[1]
+    x, y, z = param[2]
+    return -1.0/ma.pow((x-a*ma.cos(fi))**2 + (y-l)**2 + (z -a*ma.sin(fi))**2, 0.5)
+def apodint5z(l, param):
+    a, fi = param[0], param[1]
+    x, y, z = param[2]
+    return 0.0
+
+#################### DEL ZANKE 6: ma.pow((x-l*ma.cos(fi))**2 + (y+a)**2 + (z-l*ma.sin(fi))**2, 1.5) ####################
+def apodint6x(l, param):
+    a, fi = param[0], param[1]
+    x, y, z = param[2]
+    return -ma.cos(fi) /ma.pow((x-l*ma.cos(fi))**2 + (y+a)**2 + (z-l*ma.sin(fi))**2, 0.5)
+def apodint6y(l, param):
+    a, fi = param[0], param[1]
+    x, y, z = param[2]
+    return 0.0
+def apodint6z(l, param):
+    a, fi = param[0], param[1]
+    x, y, z = param[2]
+    return -ma.sin(fi)/ma.pow((x-l*ma.cos(fi))**2 + (y+a)**2 + (z-l*ma.sin(fi))**2, 0.5)
